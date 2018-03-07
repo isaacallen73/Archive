@@ -71,7 +71,7 @@ class App extends Component {
 
   componentDidUpdate() {
    // console.log(this.state.matches)
-    if ( this.state.matches == null && this.state.filterString !== '' ) {
+    if ( this.state.filterString.valueOf() !== this.state.lastFilterString.valueOf() ) {
       console.log(this.state.filterString)
       console.log('true')
       let usersRef = database.ref('users/' + this.state.filterString);
@@ -83,7 +83,8 @@ class App extends Component {
           longTermTracks: snapshot.child('longTermTracks').val(),
           shortTermTracks: snapshot.child('shortTermTracks').val(),
           country: snapshot.child('country').val(),
-        }
+        },
+        lastFilterString: this.state.filterString
       }))
       //this.setState({ lastFilterString: this.filterString })
       console.log(this.state.matches)
@@ -126,18 +127,17 @@ class App extends Component {
           shortTermTracks: data.shortTermTracks,
           country: data.country
         }
-      }))
-    if (this.state.user) {
-      database.ref('users' + this.state.user.userID).push({
+      })).then(data => {
+      database.ref('users/' + this.state.user.userID).set({
         userID: this.state.user.userID,
-        longTermArtists: "Kendrick Lamar",//this.state.user.longTermArtists,
+        longTermArtists: this.state.user.longTermArtists,
         shortTermArtists: this.state.user.shortTermArtists,
         longTermTracks: this.state.user.longTermTracks,
         shortTermTracks: this.state.user.shortTermTracks,
         country: this.state.user.country
-      })
+      })})
       console.log('saved')
-    }
+    
 
 
     //database.ref('users/' + this.state.filterString).on('value', snapshot => this.setState{})
@@ -166,7 +166,7 @@ class App extends Component {
           : <button onClick={() => {
             window.location = window.location.href.includes('localhost')
               ? 'http://localhost:8888/login'
-              : 'https://insta-fy-backend.herokuapp.com/login'
+              : 'https://archive-backend.firebaseapp.com/login'
           }
           }
             style={{ padding: '20px', 'font-size': '50px', 'margin-top': '20px' }}>Sign in with Spotify</button>
@@ -182,6 +182,11 @@ class App extends Component {
                   <li>{this.state.matches.shortTermArtists.items[2].name}</li>
                 </ul>
               </ul>
+              <button onClick={() => {
+                //
+          }
+          }
+            style={{ padding: '20px', 'font-size': '20px' }}>Create Playlist</button>
           </div>
           : <div>
               <h3 style={{ color: "#84bd00" }}>Search for users</h3>
