@@ -11,7 +11,6 @@ var config = {
   messagingSenderId: "993905900622"
 };
 const database = firebase.initializeApp(config).database();
-console.log(database)
 
 class Title extends Component {
   render() {
@@ -51,10 +50,8 @@ class Filter extends Component {
           }} />
       </div>
     );
-    //console.log('filter')
   }
 }
-
 
 class App extends Component {
   constructor(props) {
@@ -65,12 +62,10 @@ class App extends Component {
       lastFilterString: '',
       matches: null
     }
-
-
   }
 
   componentDidUpdate() {
-   // console.log(this.state.matches)
+
     if ( this.state.filterString.valueOf() !== this.state.lastFilterString.valueOf() ) {
       console.log(this.state.filterString)
       console.log('true')
@@ -86,22 +81,9 @@ class App extends Component {
         },
         lastFilterString: this.state.filterString
       }))
-      //this.setState({ lastFilterString: this.filterString })
       console.log(this.state.matches)
     }
   }
-
-  componentWillMount() {
-
-  }
-  /*
-  addMessage(e) {
-    e.preventDefault(); // <- prevent form submit from reloading the page
-    // Send the message to Firebase 
-    firebase.database().ref('messages').push(this.inputEl.value);
-    this.inputEl.value = ''; // <- clear the input
-  }
-  */
 
   componentDidMount() {
     let parsed = queryString.parse(window.location.search);
@@ -137,11 +119,8 @@ class App extends Component {
         country: this.state.user.country
       })})
       console.log('saved')
-    
-
-
-    //database.ref('users/' + this.state.filterString).on('value', snapshot => this.setState{})
   }
+
   render() {
     return (
       <div className="App">
@@ -184,8 +163,7 @@ class App extends Component {
               </ul>
               <button onClick={() => {
                 //
-          }
-          }
+          }}
             style={{ padding: '20px', 'font-size': '20px' }}>Create Playlist</button>
           </div>
           : <div>
